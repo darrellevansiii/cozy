@@ -7,14 +7,19 @@ import Radio from './components/Radio';
 import Video from './components/Video';
 import LookBook from './components/LookBook';
 import RelaxCreateModal from './components/RelaxCreateModal';
+import CartModal from './components/CartModal';
+import { useShopify } from './context/ShopifyContext';
 
-function App() {
+function AppContent() {
   const [expandedApp, setExpandedApp] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isCartOpen, setIsCartOpen] = useState(false);
   const [cursorColors, setCursorColors] = useState({
     fill: '#ffffff',
     outline: '#4a9fd8'
   });
+
+  const { cartCount } = useShopify();
 
   const toggleExpand = (appName) => {
     setExpandedApp(expandedApp === appName ? null : appName);
@@ -35,8 +40,12 @@ function App() {
           <h1 className="cozy-logo">Cozy</h1>
           <p className="logo-subtitle">ギャラリー</p>
         </div>
-        <button className="bag-button" title="Shopping Bag">
-          Bag⁺
+        <button
+          className="bag-button"
+          title="Shopping Bag"
+          onClick={() => setIsCartOpen(true)}
+        >
+          Bag{cartCount > 0 && <span className="bag-count">{cartCount}</span>}
         </button>
       </div>
 
@@ -134,8 +143,13 @@ function App() {
         onClose={() => setIsModalOpen(false)}
         onCursorChange={handleCursorChange}
       />
+
+      <CartModal
+        isOpen={isCartOpen}
+        onClose={() => setIsCartOpen(false)}
+      />
     </div>
   );
 }
 
-export default App;
+export default AppContent;

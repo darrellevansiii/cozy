@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useShopify } from '../context/ShopifyContext';
 import './Shop.css';
 
-const products = [
+// Fallback products if Shopify isn't configured
+const mockProducts = [
   {
     id: 1,
     name: 'Cozy Blue Hoodie',
@@ -33,17 +35,55 @@ const products = [
 ];
 
 function Shop({ isExpanded }) {
+  const { products: shopifyProducts, isLoading, addToCart } = useShopify();
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [displayProducts, setDisplayProducts] = useState(mockProducts);
+  const [isAdding, setIsAdding] = useState(false);
+
+  useEffect(() => {
+    // Use Shopify products if available, otherwise use mock products
+    if (!isLoading && shopifyProducts && shopifyProducts.length > 0) {
+      const formattedProducts = shopifyProducts.map((product) => ({
+        id: product.id,
+        shopifyId: product.variants[0].id,
+        name: product.title,
+        price: `$${product.variants[0].price.amount}`,
+        color: product.variants[0].title.includes('Blue') ? '#5B9BD5' :
+               product.variants[0].title.includes('Black') ? '#1F1F1F' :
+               product.variants[0].title.includes('White') ? '#FFFFFF' :
+               product.variants[0].title.includes('Red') ? '#D55B5B' : '#5B9BD5',
+        image: product.productType?.toLowerCase().includes('hoodie') ? 'hoodie' : 'tee',
+        shopifyProduct: product
+      }));
+      setDisplayProducts(formattedProducts);
+    }
+  }, [shopifyProducts, isLoading]);
 
   const nextProduct = () => {
-    setCurrentIndex((prev) => (prev + 1) % products.length);
+    setCurrentIndex((prev) => (prev + 1) % displayProducts.length);
   };
 
   const prevProduct = () => {
-    setCurrentIndex((prev) => (prev - 1 + products.length) % products.length);
+    setCurrentIndex((prev) => (prev - 1 + displayProducts.length) % displayProducts.length);
   };
 
-  const currentProduct = products[currentIndex];
+  const handleAddToCart = async () => {
+    const currentProduct = displayProducts[currentIndex];
+
+    if (currentProduct.shopifyId) {
+      setIsAdding(true);
+      await addToCart(currentProduct.shopifyId, 1);
+      setIsAdding(false);
+
+      // Show success feedback
+      alert(`Added ${currentProduct.name} to your bag!`);
+    } else {
+      // Fallback for mock products
+      alert(`${currentProduct.name} - Configure Shopify to enable checkout`);
+    }
+  };
+
+  const currentProduct = displayProducts[currentIndex];
 
   return (
     <div className={`shop-container ${isExpanded ? 'expanded' : ''}`}>
@@ -82,7 +122,7 @@ function Shop({ isExpanded }) {
           <h3>{currentProduct.name}</h3>
           <p className="price">{currentProduct.price}</p>
           <div className="product-dots">
-            {products.map((_, index) => (
+            {displayProducts.map((_, index) => (
               <span
                 key={index}
                 className={`dot ${index === currentIndex ? 'active' : ''}`}
@@ -90,7 +130,13 @@ function Shop({ isExpanded }) {
               />
             ))}
           </div>
-          <button className="add-to-cart">Add to Bag</button>
+          <button
+            className="add-to-cart"
+            onClick={handleAddToCart}
+            disabled={isAdding}
+          >
+            {isAdding ? 'Adding...' : 'Add to Bag'}
+          </button>
         </div>
       )}
     </div>
