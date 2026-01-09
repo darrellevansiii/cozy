@@ -55,6 +55,7 @@
   width: 40px;
   height: 40px;
   font-size: 28px;
+  font-family: 'Times New Roman', Times, serif;
   color: #333;
   cursor: pointer;
   display: flex;
@@ -233,6 +234,7 @@
   flex-direction: column;
   align-items: center;
   gap: 8px;
+  font-family: 'Times New Roman', Times, serif;
 }
 
 .preset-button:hover {
