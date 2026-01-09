@@ -37,8 +37,11 @@ function AppContent() {
 
       <div className="header">
         <div className="logo-container">
-          <h1 className="cozy-logo">Cozy</h1>
-          <p className="logo-subtitle">ギャラリー</p>
+          <img
+            src="/images/cozy-logo.png"
+            alt="Cozy Gallery"
+            className="cozy-logo-image"
+          />
         </div>
         <button
           className="bag-button"
@@ -120,9 +123,12 @@ function AppContent() {
       </div>
 
       <div className="bottom-section">
-        <div className="relax-create-button" onClick={() => setIsModalOpen(true)}>
-          Relax, create.
-        </div>
+        <img
+          src="/images/relax-create.png"
+          alt="Relax, create."
+          className="relax-create-button"
+          onClick={() => setIsModalOpen(true)}
+        />
       </div>
 
       <div className="footer">
