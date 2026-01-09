@@ -1,0 +1,239 @@
+.video-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.tv-set {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.tv-screen {
+  background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+  border: 15px solid #333;
+  border-radius: 12px;
+  width: 380px;
+  height: 280px;
+  position: relative;
+  box-shadow:
+    inset 0 0 20px rgba(0, 0, 0, 0.8),
+    0 10px 40px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+}
+
+.tv-screen::before {
+  content: '';
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
+  border: 2px solid #444;
+  border-radius: 4px;
+  pointer-events: none;
+}
+
+.screen-content {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, #1a1a1a 0%, #0a0a0a 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+}
+
+.screen-glare {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    transparent 50%
+  );
+  pointer-events: none;
+  z-index: 2;
+}
+
+.play-button {
+  background: rgba(255, 255, 255, 0.1);
+  border: 4px solid rgba(255, 255, 255, 0.6);
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s;
+  backdrop-filter: blur(5px);
+}
+
+.play-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.8);
+  transform: scale(1.1);
+}
+
+.play-icon {
+  font-size: 40px;
+  color: rgba(255, 255, 255, 0.9);
+  margin-left: 6px;
+}
+
+.playing-indicator {
+  text-align: center;
+  color: white;
+  cursor: pointer;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.video-playing-text {
+  font-size: 24px;
+  font-weight: bold;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+  letter-spacing: 2px;
+}
+
+.pause-hint {
+  font-size: 12px;
+  margin-top: 10px;
+  opacity: 0.6;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+.tv-stand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: -5px;
+}
+
+.stand-pole {
+  width: 40px;
+  height: 30px;
+  background: linear-gradient(to bottom, #333 0%, #222 100%);
+  border-radius: 4px;
+}
+
+.stand-base {
+  width: 120px;
+  height: 15px;
+  background: linear-gradient(to bottom, #2a2a2a 0%, #1a1a1a 100%);
+  border-radius: 8px;
+  margin-top: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* Expanded View */
+.video-container.expanded {
+  flex-direction: row;
+  gap: 40px;
+  align-items: center;
+}
+
+.video-container.expanded .tv-screen {
+  width: 480px;
+  height: 340px;
+}
+
+.video-info {
+  color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  max-width: 350px;
+}
+
+.video-info h3 {
+  font-size: 28px;
+  margin: 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.current-video {
+  font-size: 20px;
+  font-weight: bold;
+  color: #87ceeb;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.video-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.video-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  padding: 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.video-item:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateX(5px);
+}
+
+.video-item.active {
+  background: rgba(135, 206, 235, 0.3);
+  border-color: #87ceeb;
+}
+
+.video-thumbnail {
+  width: 50px;
+  height: 50px;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+}
+
+.video-title {
+  flex: 1;
+  font-size: 14px;
+}
+
+@media (max-width: 768px) {
+  .tv-screen {
+    width: 280px;
+    height: 200px;
+  }
+
+  .video-container.expanded {
+    flex-direction: column;
+  }
+
+  .video-container.expanded .tv-screen {
+    width: 320px;
+    height: 240px;
+  }
+}
